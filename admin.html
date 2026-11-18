@@ -1,0 +1,1721 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUREX TP | Admin Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --dark:#171714;
+  --gold:#c6a46a;
+  --bg:#f5f5f2;
+  --white:#fff;
+  --muted:#85857e;
+  --border:#eaeae5;
+  --green:#16834c;
+  --red:#c0392b;
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--dark);
+}
+
+button,input,select {
+  font:inherit;
+}
+
+button {
+  cursor:pointer;
+}
+
+.login-screen {
+  position:fixed;
+  inset:0;
+  background:var(--dark);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  z-index:1000;
+}
+
+.login-card {
+  background:white;
+  padding:40px;
+  width:100%;
+  max-width:400px;
+  border-radius:10px;
+}
+
+.login-card h1 {
+  font-family:'Playfair Display',serif;
+  margin-bottom:8px;
+}
+
+.login-card p {
+  color:var(--muted);
+  font-size:13px;
+  margin-bottom:25px;
+}
+
+.login-card input {
+  width:100%;
+  padding:14px;
+  border:1px solid var(--border);
+  margin-bottom:15px;
+  outline:none;
+}
+
+.login-card button {
+  width:100%;
+  background:var(--dark);
+  color:white;
+  padding:15px;
+  border:none;
+}
+
+.login-error {
+  color:var(--red);
+  font-size:12px;
+  margin-bottom:12px;
+}
+
+.layout {
+  display:none;
+  min-height:100vh;
+}
+
+.sidebar {
+  width:245px;
+  background:var(--dark);
+  color:white;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  padding:28px 18px;
+  z-index:10;
+}
+
+.logo {
+  font-family:'Playfair Display',serif;
+  font-size:25px;
+  letter-spacing:2px;
+  padding:0 12px 35px;
+}
+
+.logo span {
+  color:var(--gold);
+}
+
+.sidebar small {
+  color:#85857e;
+  font-size:10px;
+  letter-spacing:2px;
+  padding:0 12px;
+}
+
+.menu {
+  margin-top:18px;
+}
+
+.menu button {
+  display:block;
+  width:100%;
+  background:none;
+  border:none;
+  color:#ccc;
+  text-align:left;
+  padding:14px 12px;
+  border-radius:5px;
+  font-size:13px;
+  margin-bottom:5px;
+}
+
+.menu button.active,
+.menu button:hover {
+  background:#34342f;
+  color:var(--gold);
+}
+
+.logout {
+  position:absolute;
+  bottom:30px;
+  left:18px;
+  right:18px;
+  background:#34342f;
+  color:white;
+  border:none;
+  padding:13px;
+}
+
+.main {
+  margin-left:245px;
+  padding:30px;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.topbar h2 {
+  font-family:'Playfair Display',serif;
+  font-size:28px;
+}
+
+.topbar p {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:5px;
+}
+
+.admin-tag {
+  background:white;
+  border:1px solid var(--border);
+  padding:12px 18px;
+  font-size:12px;
+}
+
+.page {
+  display:none;
+}
+
+.page.active {
+  display:block;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+  margin-bottom:30px;
+}
+
+.stat-card {
+  background:white;
+  padding:23px;
+  border-radius:7px;
+  border:1px solid var(--border);
+}
+
+.stat-card p {
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:14px;
+}
+
+.stat-card h3 {
+  font-size:25px;
+}
+
+.panel {
+  background:white;
+  padding:24px;
+  border:1px solid var(--border);
+  border-radius:7px;
+  margin-bottom:22px;
+}
+
+.panel-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:22px;
+  flex-wrap:wrap;
+}
+
+.panel-head h3 {
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+}
+
+.primary {
+  background:var(--dark);
+  color:white;
+  border:none;
+  padding:12px 18px;
+  font-size:12px;
+}
+
+.primary:hover {
+  background:var(--gold);
+}
+
+.search {
+  border:1px solid var(--border);
+  padding:12px;
+  width:250px;
+  outline:none;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  min-width:650px;
+}
+
+th,td {
+  padding:15px 12px;
+  text-align:left;
+  border-bottom:1px solid var(--border);
+  font-size:12px;
+}
+
+th {
+  color:var(--muted);
+  font-weight:600;
+}
+
+.product-name {
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.product-name img {
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  background:#eee;
+}
+
+.status {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:10px;
+  background:#e9f6ee;
+  color:var(--green);
+}
+
+.low {
+  background:#fff2df;
+  color:#aa6900;
+}
+
+.out {
+  background:#ffebeb;
+  color:var(--red);
+}
+
+.actions {
+  display:flex;
+  gap:8px;
+}
+
+.edit-btn,.delete-btn {
+  border:none;
+  padding:8px 10px;
+  font-size:11px;
+}
+
+.edit-btn {
+  background:#f0eee8;
+}
+
+.delete-btn {
+  background:#ffeded;
+  color:var(--red);
+}
+
+.table-wrap {
+  overflow-x:auto;
+}
+
+.form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.form-group label {
+  display:block;
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:8px;
+}
+
+.form-group input,
+.form-group select {
+  width:100%;
+  padding:13px;
+  border:1px solid var(--border);
+  outline:none;
+  background:white;
+}
+
+.form-group.full {
+  grid-column:1/-1;
+}
+
+.form-actions {
+  display:flex;
+  gap:10px;
+  margin-top:22px;
+}
+
+.secondary {
+  background:#eee;
+  border:none;
+  padding:12px 18px;
+}
+
+.empty {
+  text-align:center;
+  color:var(--muted);
+  padding:35px;
+}
+
+.order-status {
+  padding:7px;
+  border:1px solid var(--border);
+  background:white;
+  border-radius:4px;
+  font-size:11px;
+}
+
+.customer-box {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.customer-box div {
+  background:var(--bg);
+  padding:20px;
+  border-radius:5px;
+}
+
+.customer-box h3 {
+  font-size:23px;
+  margin-bottom:7px;
+}
+
+.customer-box p {
+  color:var(--muted);
+  font-size:12px;
+}
+
+.toast {
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  background:var(--dark);
+  color:white;
+  padding:15px 22px;
+  z-index:2000;
+  display:none;
+  font-size:13px;
+}
+
+@media(max-width:950px) {
+  .stats {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .sidebar {
+    width:200px;
+  }
+
+  .main {
+    margin-left:200px;
+  }
+}
+
+@media(max-width:650px) {
+  .sidebar {
+    width:100%;
+    height:auto;
+    position:relative;
+    padding:15px;
+  }
+
+  .logo {
+    padding:0 5px 15px;
+  }
+
+  .sidebar small,
+  .logout {
+    display:none;
+  }
+
+  .menu {
+    display:flex;
+    overflow-x:auto;
+    margin:0;
+    gap:5px;
+  }
+
+  .menu button {
+    width:auto;
+    white-space:nowrap;
+    padding:10px;
+    margin:0;
+  }
+
+  .layout {
+    display:none;
+  }
+
+  .main {
+    margin:0;
+    padding:18px 12px;
+  }
+
+  .stats {
+    gap:10px;
+  }
+
+  .stat-card {
+    padding:15px;
+  }
+
+  .stat-card h3 {
+    font-size:20px;
+  }
+
+  .topbar h2 {
+    font-size:23px;
+  }
+
+  .form-grid {
+    grid-template-columns:1fr;
+  }
+
+  .form-group.full {
+    grid-column:auto;
+  }
+
+  .customer-box {
+    grid-template-columns:1fr;
+  }
+}
+
+/* WATCH IMAGE UPLOAD */
+
+.upload-area {
+  width: 100%;
+}
+
+.upload-button {
+  min-height: 180px;
+  border: 2px dashed #c6a46a;
+  background: #faf9f6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: .3s;
+  text-align: center;
+  padding: 20px;
+}
+
+.upload-button:hover {
+  background: #f0ece3;
+  border-color: #171714;
+}
+
+.upload-button strong {
+  font-size: 15px;
+}
+
+.upload-button span {
+  font-size: 12px;
+  color: #777;
+}
+
+.upload-button small {
+  font-size: 10px;
+  color: #999;
+}
+
+#image-preview-container {
+  display: none;
+  margin-top: 20px;
+}
+
+#image-preview {
+  width: 100%;
+  max-width: 300px;
+  height: 230px;
+  object-fit: contain;
+  background: #eee;
+  border-radius: 8px;
+  display: block;
+}
+
+.remove-image {
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #ffeded;
+  color: #c0392b;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <h1>AUREX<span style="color:#c6a46a">TP</span></h1>
+    <p>Administrator Login</p>
+
+    <input type="text" id="username" placeholder="Username">
+
+    <input type="password" id="password" placeholder="Password">
+
+    <div class="login-error" id="login-error"></div>
+
+    <button onclick="login()">LOGIN TO DASHBOARD</button>
+
+    <p style="margin-top:18px;margin-bottom:0">
+      Demo username: admin<br>
+      Demo password: admin123
+    </p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+
+<div class="layout" id="layout">
+
+  <aside class="sidebar">
+
+    <div class="logo">AUREX<span>TP</span></div>
+
+    <small>ADMINISTRATION</small>
+
+    <div class="menu">
+
+      <button class="active" onclick="showPage('overview',this)">
+        ▦ &nbsp; Overview
+      </button>
+
+      <button onclick="showPage('products',this)">
+        ◷ &nbsp; Products
+      </button>
+
+      <button onclick="showPage('add-product',this)">
+        + &nbsp; Add Product
+      </button>
+
+      <button onclick="showPage('orders',this)">
+        ▤ &nbsp; Orders
+      </button>
+
+      <button onclick="showPage('customers',this)">
+        ♙ &nbsp; Customers
+      </button>
+
+      <button onclick="showPage('settings',this)">
+        ⚙ &nbsp; Settings
+      </button>
+
+    </div>
+
+    <button class="logout" onclick="logout()">LOG OUT</button>
+
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div>
+        <h2 id="page-title">Dashboard Overview</h2>
+        <p>Welcome to your AUREX TP store administration.</p>
+      </div>
+
+      <div class="admin-tag">Administrator</div>
+    </div>
+
+    <!-- OVERVIEW -->
+
+    <section class="page active" id="overview">
+
+      <div class="stats">
+
+        <div class="stat-card">
+          <p>Total Products</p>
+          <h3 id="stat-products">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Total Orders</p>
+          <h3 id="stat-orders">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Total Customers</p>
+          <h3 id="stat-customers">0</h3>
+        </div>
+
+        <div class="stat-card">
+          <p>Confirmed Revenue</p>
+          <h3 id="stat-revenue">₦0</h3>
+        </div>
+
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Recent Orders</h3>
+          <button class="primary" onclick="goTo('orders')">
+            VIEW ALL ORDERS
+          </button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ORDER ID</th>
+                <th>CUSTOMER</th>
+                <th>TOTAL</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="recent-orders"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PRODUCTS -->
+
+    <section class="page" id="products">
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h3>All Products</h3>
+
+          <button class="primary" onclick="goTo('add-product')">
+            + ADD NEW WATCH
+          </button>
+        </div>
+
+        <input
+          class="search"
+          id="product-search"
+          placeholder="Search watches..."
+          oninput="renderProducts()"
+        >
+
+        <br><br>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>PRODUCT</th>
+                <th>CATEGORY</th>
+                <th>PRICE</th>
+                <th>STOCK</th>
+                <th>ACTIONS</th>
+              </tr>
+            </thead>
+
+            <tbody id="product-table"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ADD PRODUCT -->
+
+    <section class="page" id="add-product">
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h3 id="form-title">Add New Watch</h3>
+        </div>
+
+        <form id="product-form" onsubmit="saveProduct(event)">
+
+          <input type="hidden" id="edit-id">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>Watch Name</label>
+              <input id="name" required placeholder="e.g. Royal Gold">
+            </div>
+
+            <div class="form-group">
+              <label>Category</label>
+              <select id="category" required>
+                <option value="Men">Men</option>
+                <option value="Women">Women</option>
+                <option value="Luxury">Luxury</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Price (₦)</label>
+              <input id="price" type="number" min="1" required placeholder="185000">
+            </div>
+
+            <div class="form-group">
+              <label>Stock Quantity</label>
+              <input id="stock" type="number" min="0" required placeholder="20">
+            </div>
+
+            <div class="form-group full">
+              <label>Product Description</label>
+              <input id="description" required placeholder="Describe your wristwatch">
+            </div>
+
+           
+<div class="form-group full">
+  <label>Upload Watch Picture</label>
+
+  <div class="upload-area">
+    <input
+      type="file"
+      id="image"
+      accept="image/*"
+      hidden
+    >
+
+    <label for="image" class="upload-button">
+      <span style="font-size:32px;">📸</span>
+      <strong>Choose Watch Image</strong>
+      <span>Click to select a picture from your device</span>
+      <small>JPG, JPEG, PNG or WEBP</small>
+    </label>
+
+    <div id="image-preview-container">
+      <img id="image-preview" src="" alt="Watch preview">
+
+      <button
+        type="button"
+        class="remove-image"
+        onclick="removeImage()">
+        Remove Picture ×
+      </button>
+    </div>
+  </div>
+</div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button class="primary" type="submit">
+              SAVE PRODUCT
+            </button>
+
+            <button class="secondary" type="button" onclick="resetForm()">
+              CANCEL
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </section>
+
+    <!-- ORDERS -->
+
+    <section class="page" id="orders">
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h3>Customer Orders</h3>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ORDER ID</th>
+                <th>DATE</th>
+                <th>ITEMS</th>
+                <th>TOTAL</th>
+                <th>STATUS</th>
+              </tr>
+            </thead>
+
+            <tbody id="orders-table"></tbody>
+          </table>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- CUSTOMERS -->
+
+    <section class="page" id="customers">
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h3>Customer Overview</h3>
+        </div>
+
+        <div class="customer-box">
+          <div>
+            <h3 id="customer-count">0</h3>
+            <p>Recorded customers</p>
+          </div>
+
+          <div>
+            <h3 id="customer-orders">0</h3>
+            <p>Total orders</p>
+          </div>
+
+          <div>
+            <h3 id="customer-sales">₦0</h3>
+            <p>Confirmed sales</p>
+          </div>
+        </div>
+
+        <br>
+
+        <p style="font-size:12px;color:#85857e">
+          Customer records are created when an order is submitted through
+          the connected storefront.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- SETTINGS -->
+
+    <section class="page" id="settings">
+
+      <div class="panel">
+
+        <div class="panel-head">
+          <h3>Store Settings</h3>
+        </div>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>Store Name</label>
+            <input id="store-name" value="AUREX TP">
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp Number</label>
+            <input id="whatsapp" placeholder="2348012345678">
+          </div>
+
+        </div>
+
+        <br>
+
+        <button class="primary" onclick="saveSettings()">
+          SAVE SETTINGS
+        </button>
+
+        <br><br>
+
+        <p style="font-size:12px;color:#85857e;line-height:1.8">
+          This starter dashboard uses browser storage. Its demo login is
+          not secure enough for a publicly deployed store. A production
+          store needs server-side authentication and a database.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+
+// DEMO LOGIN
+// This is only a local prototype, not secure authentication.
+
+function login() {
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  if(username === "aurex" && password === "aurex14t") {
+
+    sessionStorage.setItem("timevaultAdmin","true");
+
+    showDashboard();
+
+  } else {
+
+    document.getElementById("login-error").textContent =
+      "Incorrect username or password.";
+
+  }
+
+}
+
+function showDashboard() {
+
+  document.getElementById("login-screen").style.display = "none";
+  document.getElementById("layout").style.display = "block";
+
+  initializeData();
+  refreshDashboard();
+
+}
+
+function logout() {
+
+  sessionStorage.removeItem("timevaultAdmin");
+
+  location.reload();
+
+}
+
+// STORAGE
+
+const starterProducts = [
+  {
+    id:1,
+    name:"Royal Gold",
+    category:"Men",
+    price:185000,
+    description:"Classic gold luxury timepiece",
+    image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
+    stock:20
+  },
+  {
+    id:2,
+    name:"Midnight Black",
+    category:"Men",
+    price:145000,
+    description:"Minimal black statement watch",
+    image:"https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600",
+    stock:15
+  },
+  {
+    id:3,
+    name:"Classic Silver",
+    category:"Luxury",
+    price:225000,
+    description:"Premium silver wristwatch",
+    image:"https://images.unsplash.com/photo-1539874754764-5a96559165b0?w=600",
+    stock:12
+  },
+  {
+    id:4,
+    name:"Rose Elegance",
+    category:"Women",
+    price:165000,
+    description:"Elegant rose gold design",
+    image:"https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600",
+    stock:18
+  },
+  {
+    id:5,
+    name:"Executive Gold",
+    category:"Luxury",
+    price:350000,
+    description:"Sophisticated executive style",
+    image:"https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600",
+    stock:20
+  },
+  {
+    id:6,
+    name:"Diamond Classic",
+    category:"Women",
+    price:195000,
+    description:"Beautiful refined design",
+    image:"https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600",
+    stock:20
+  },
+  {
+    id:7,
+    name:"Urban Sport",
+    category:"Men",
+    price:120000,
+    description:"Modern everyday timepiece",
+    image:"https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=600",
+    stock:20
+  },
+  {
+    id:8,
+    name:"Prestige",
+    category:"Luxury",
+    price:420000,
+    description:"An exclusive luxury statement",
+    image:"https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=600",
+    stock:20
+  }
+];
+
+function initializeData() {
+
+  if(!localStorage.getItem("timevaultProducts")) {
+
+    localStorage.setItem(
+      "timevaultProducts",
+      JSON.stringify(starterProducts)
+    );
+
+  }
+
+  if(!localStorage.getItem("timevaultOrders")) {
+
+    localStorage.setItem("timevaultOrders","[]");
+
+  }
+
+}
+
+function getProducts() {
+
+  return JSON.parse(
+    localStorage.getItem("timevaultProducts") || "[]"
+  );
+
+}
+
+function saveProducts(products) {
+
+  try {
+    localStorage.setItem(
+      "timevaultProducts",
+      JSON.stringify(products)
+    );
+    return true;
+  } catch (error) {
+    console.error("Could not save AUREX TP products:", error);
+    alert("The product could not be saved. The browser may be out of storage space. Try a smaller watch image.");
+    return false;
+  }
+
+}
+
+function getOrders() {
+
+  return JSON.parse(
+    localStorage.getItem("timevaultOrders") || "[]"
+  );
+
+}
+
+// HELPERS
+
+function money(value) {
+
+  return "₦" + Number(value).toLocaleString("en-NG");
+
+}
+
+function toast(message) {
+
+  const box = document.getElementById("toast");
+
+  box.textContent = message;
+  box.style.display = "block";
+
+  setTimeout(() => {
+    box.style.display = "none";
+  },2500);
+
+}
+
+// NAVIGATION
+
+function showPage(page,button) {
+
+  document.querySelectorAll(".page").forEach(section => {
+    section.classList.remove("active");
+  });
+
+  document.getElementById(page).classList.add("active");
+
+  document.querySelectorAll(".menu button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  if(button) button.classList.add("active");
+
+  const titles = {
+    overview:"Dashboard Overview",
+    products:"Manage Products",
+    "add-product":"Add / Edit Product",
+    orders:"Manage Orders",
+    customers:"Customers",
+    settings:"Store Settings"
+  };
+
+  document.getElementById("page-title").textContent = titles[page];
+
+  refreshDashboard();
+
+}
+
+function goTo(page) {
+
+  const buttons = [...document.querySelectorAll(".menu button")];
+
+  const index = {
+    overview:0,
+    products:1,
+    "add-product":2,
+    orders:3,
+    customers:4,
+    settings:5
+  }[page];
+
+  showPage(page,buttons[index]);
+
+}
+
+// PRODUCT MANAGEMENT
+
+function renderProducts() {
+
+  const products = getProducts();
+
+  const search = (
+    document.getElementById("product-search")?.value || ""
+  ).toLowerCase();
+
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(search) ||
+    p.category.toLowerCase().includes(search)
+  );
+
+  const table = document.getElementById("product-table");
+
+  if(filtered.length === 0) {
+
+    table.innerHTML =
+      '<tr><td colspan="5" class="empty">No products found.</td></tr>';
+
+    return;
+
+  }
+
+  table.innerHTML = filtered.map(p => {
+
+    let stockClass = p.stock === 0 ? "out" :
+      p.stock <= 5 ? "low" : "";
+
+    let stockLabel = p.stock === 0 ? "Out of stock" :
+      p.stock <= 5 ? "Low stock" : "In stock";
+
+    return `
+      <tr>
+
+        <td>
+          <div class="product-name">
+            <img src="${escapeHTML(p.image)}" alt="">
+            <span>${escapeHTML(p.name)}</span>
+          </div>
+        </td>
+
+        <td>${escapeHTML(p.category)}</td>
+
+        <td>${money(p.price)}</td>
+
+        <td>
+          <span class="status ${stockClass}">
+            ${p.stock} - ${stockLabel}
+          </span>
+        </td>
+
+        <td>
+          <div class="actions">
+            <button class="edit-btn" onclick="editProduct(${p.id})">EDIT</button>
+            <button class="delete-btn" onclick="deleteProduct(${p.id})">DELETE</button>
+          </div>
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+}
+
+function escapeHTML(value) {
+
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+
+}
+
+
+function saveProduct(event) {
+
+  event.preventDefault();
+
+  const products = getProducts();
+
+  const id = document.getElementById("edit-id").value;
+
+  const oldProduct = id
+    ? products.find(p => p.id === Number(id))
+    : null;
+
+  const image = uploadedImage || oldProduct?.image || "";
+
+  if (!image) {
+    alert("Please upload a picture of your wristwatch.");
+    return;
+  }
+
+  const product = {
+
+    id: id ? Number(id) : Date.now(),
+
+    name: document.getElementById("name").value.trim(),
+
+    category: document.getElementById("category").value,
+
+    price: Number(document.getElementById("price").value),
+
+    stock: Number(document.getElementById("stock").value),
+
+    description: document.getElementById("description").value.trim(),
+
+    image: image
+
+  };
+
+  if (
+    !product.name ||
+    product.price <= 0 ||
+    product.stock < 0
+  ) {
+    alert("Please enter valid product details.");
+    return;
+  }
+
+  if (id) {
+
+    const index = products.findIndex(
+      p => p.id === Number(id)
+    );
+
+    if (index !== -1) {
+      products[index] = product;
+    }
+
+    toast("Watch updated successfully!");
+
+  } else {
+
+    products.push(product);
+
+    toast("New watch uploaded successfully!");
+
+  }
+
+  if (!saveProducts(products)) return;
+
+  resetForm();
+
+  renderProducts();
+
+  refreshDashboard();
+
+  goTo("products");
+
+}
+
+
+function editProduct(id) {
+
+  const product = getProducts().find(
+    p => p.id === id
+  );
+
+  if (!product) return;
+
+  document.getElementById("edit-id").value = product.id;
+
+  document.getElementById("name").value = product.name;
+
+  document.getElementById("category").value = product.category;
+
+  document.getElementById("price").value = product.price;
+
+  document.getElementById("stock").value = product.stock ?? 0;
+
+  document.getElementById("description").value = product.description;
+
+  document.getElementById("image").value = "";
+
+  uploadedImage = "";
+
+  document.getElementById("image-preview").src = product.image;
+
+  document.getElementById("image-preview-container")
+    .style.display = "block";
+
+  document.getElementById("form-title").textContent =
+    "Edit Watch";
+
+  goTo("add-product");
+
+}
+
+function deleteProduct(id) {
+
+  if(!confirm("Are you sure you want to delete this watch?")) return;
+
+  const products = getProducts().filter(p => p.id !== id);
+
+  if (!saveProducts(products)) return;
+
+  renderProducts();
+
+  refreshDashboard();
+
+  toast("Product deleted.");
+
+}
+
+
+function resetForm() {
+
+  document.getElementById("product-form").reset();
+
+  document.getElementById("edit-id").value = "";
+
+  uploadedImage = "";
+
+  document.getElementById("image-preview").src = "";
+
+  document.getElementById("image-preview-container")
+    .style.display = "none";
+
+  document.getElementById("form-title").textContent =
+    "Add New Watch";
+
+}
+
+// ORDER MANAGEMENT
+
+function renderOrders() {
+
+  const orders = getOrders();
+
+  const table = document.getElementById("orders-table");
+
+  if(orders.length === 0) {
+
+    table.innerHTML =
+      '<tr><td colspan="5" class="empty">No orders yet.</td></tr>';
+
+    return;
+
+  }
+
+  table.innerHTML = orders.map(order => {
+
+    const itemNames = order.items.map(item =>
+      escapeHTML(item.name) + " x " + item.quantity
+    ).join(", ");
+
+    return `
+      <tr>
+
+        <td>${escapeHTML(order.id)}</td>
+
+        <td>${escapeHTML(order.date)}</td>
+
+        <td>${itemNames}</td>
+
+        <td>${money(order.total)}</td>
+
+        <td>
+          <select class="order-status"
+            onchange="changeOrderStatus('${escapeHTML(order.id)}',this.value)">
+
+            ${["Pending","Confirmed","Shipped","Delivered","Cancelled"].map(status =>
+              `<option value="${status}" ${order.status === status ? "selected" : ""}>${status}</option>`
+            ).join("")}
+
+          </select>
+        </td>
+
+      </tr>
+    `;
+
+  }).join("");
+
+}
+
+function changeOrderStatus(id,status) {
+
+  const orders = getOrders();
+
+  const order = orders.find(o => o.id === id);
+
+  if(!order) return;
+
+  order.status = status;
+
+  localStorage.setItem(
+    "timevaultOrders",
+    JSON.stringify(orders)
+  );
+
+  refreshDashboard();
+
+  toast("Order status updated.");
+
+}
+
+function renderRecentOrders() {
+
+  const orders = getOrders().slice(-5).reverse();
+
+  const table = document.getElementById("recent-orders");
+
+  if(orders.length === 0) {
+
+    table.innerHTML =
+      '<tr><td colspan="4" class="empty">No orders yet.</td></tr>';
+
+    return;
+
+  }
+
+  table.innerHTML = orders.map(order => `
+
+    <tr>
+      <td>${escapeHTML(order.id)}</td>
+      <td>${escapeHTML(order.customer || "Guest")}</td>
+      <td>${money(order.total)}</td>
+      <td>${escapeHTML(order.status)}</td>
+    </tr>
+
+  `).join("");
+
+}
+
+// DASHBOARD STATISTICS
+
+function refreshDashboard() {
+
+  const products = getProducts();
+
+  const orders = getOrders();
+
+  const customers = [...new Set(
+    orders.map(o => o.customer).filter(Boolean)
+  )];
+
+  const revenue = orders
+    .filter(o => o.status !== "Cancelled")
+    .reduce((sum,o) => sum + Number(o.total || 0),0);
+
+  document.getElementById("stat-products").textContent =
+    products.length;
+
+  document.getElementById("stat-orders").textContent =
+    orders.length;
+
+  document.getElementById("stat-customers").textContent =
+    customers.length;
+
+  document.getElementById("stat-revenue").textContent =
+    money(revenue);
+
+  document.getElementById("customer-count").textContent =
+    customers.length;
+
+  document.getElementById("customer-orders").textContent =
+    orders.length;
+
+  document.getElementById("customer-sales").textContent =
+    money(revenue);
+
+  renderProducts();
+  renderOrders();
+  renderRecentOrders();
+
+}
+
+// SETTINGS
+
+function saveSettings() {
+
+  const settings = {
+
+    name:document.getElementById("store-name").value,
+
+    whatsapp:document.getElementById("whatsapp").value
+
+  };
+
+  localStorage.setItem(
+    "timevaultSettings",
+    JSON.stringify(settings)
+  );
+
+  toast("Store settings saved.");
+
+}
+
+function loadSettings() {
+
+  const settings = JSON.parse(
+    localStorage.getItem("timevaultSettings") || "{}"
+  );
+
+  if(settings.name) {
+    document.getElementById("store-name").value = settings.name;
+  }
+
+  if(settings.whatsapp) {
+    document.getElementById("whatsapp").value = settings.whatsapp;
+  }
+
+}
+
+// START
+
+function initializeDashboard() {
+
+  initializeData();
+
+  loadSettings();
+
+  refreshDashboard();
+
+}
+
+if(sessionStorage.getItem("timevaultAdmin") === "true") {
+
+  showDashboard();
+
+}
+
+// WATCH IMAGE UPLOAD SYSTEM
+
+let uploadedImage = "";
+
+// PREVIEW SELECTED IMAGE
+
+document.getElementById("image").addEventListener("change", function(event) {
+
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  if (!file.type.startsWith("image/")) {
+    alert("Please select a valid image.");
+    this.value = "";
+    return;
+  }
+
+  // Maximum upload size: 10MB
+  if (file.size > 10 * 1024 * 1024) {
+    alert("Image is too large. Please select an image below 10MB.");
+    this.value = "";
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const sourceImage = new Image();
+
+    sourceImage.onload = function() {
+      const maxWidth = 1200;
+      const scale = Math.min(1, maxWidth / sourceImage.width);
+      const canvas = document.createElement("canvas");
+
+      canvas.width = Math.round(sourceImage.width * scale);
+      canvas.height = Math.round(sourceImage.height * scale);
+
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(sourceImage, 0, 0, canvas.width, canvas.height);
+
+      // Store a compressed JPEG rather than the original full-size phone photo.
+      uploadedImage = canvas.toDataURL("image/jpeg", 0.82);
+
+      document.getElementById("image-preview").src = uploadedImage;
+      document.getElementById("image-preview-container").style.display = "block";
+    };
+
+    sourceImage.onerror = function() {
+      alert("This picture could not be opened. Please choose another image.");
+      document.getElementById("image").value = "";
+    };
+
+    sourceImage.src = e.target.result;
+  };
+
+  reader.onerror = function() {
+    alert("The picture could not be read. Please try again.");
+  };
+
+  reader.readAsDataURL(file);
+
+});
+
+
+// REMOVE SELECTED IMAGE
+
+function removeImage() {
+
+  uploadedImage = "";
+
+  document.getElementById("image").value = "";
+
+  document.getElementById("image-preview").src = "";
+
+  document.getElementById("image-preview-container")
+    .style.display = "none";
+
+}
+
+</script>
+
+</body>
+</html>

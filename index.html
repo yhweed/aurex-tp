@@ -1,0 +1,1368 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUREX TP | Luxury Watches</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --dark: #171714;
+  --gold: #c6a46a;
+  --cream: #f7f5f0;
+  --white: #ffffff;
+  --muted: #77776f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--cream);
+  color: var(--dark);
+}
+
+button, input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ANNOUNCEMENT */
+
+.announcement {
+  background: var(--dark);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+/* HEADER */
+
+header {
+  height: 85px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 15px rgba(0,0,0,.04);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 29px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.logo span {
+  color: var(--gold);
+}
+
+nav {
+  display: flex;
+  gap: 32px;
+}
+
+nav a {
+  font-size: 13px;
+  font-weight: 600;
+  transition: .3s;
+}
+
+nav a:hover {
+  color: var(--gold);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-btn {
+  background: var(--dark);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.cart-btn span {
+  color: var(--gold);
+}
+
+/* HERO */
+
+.hero {
+  min-height: 570px;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.85), rgba(0,0,0,.18)),
+    url('https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1800') center/cover;
+  display: flex;
+  align-items: center;
+  padding: 70px 9%;
+  color: white;
+}
+
+.hero-content {
+  max-width: 570px;
+}
+
+.hero-tag {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 4px;
+  margin-bottom: 22px;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(42px, 6vw, 76px);
+  line-height: 1.1;
+  margin-bottom: 23px;
+}
+
+.hero p {
+  color: #deded8;
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 30px;
+  max-width: 440px;
+}
+
+.primary-btn {
+  display: inline-block;
+  background: var(--gold);
+  color: white;
+  padding: 16px 30px;
+  border: none;
+  font-size: 12px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  transition: .3s;
+}
+
+.primary-btn:hover {
+  background: white;
+  color: var(--dark);
+}
+
+/* BENEFITS */
+
+.benefits {
+  background: white;
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  padding: 30px 7%;
+  text-align: center;
+  gap: 20px;
+}
+
+.benefit h3 {
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.benefit p {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* PRODUCTS */
+
+.section {
+  padding: 85px 7%;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.section-heading small {
+  color: var(--gold);
+  letter-spacing: 4px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.section-heading h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 40px;
+  margin: 13px 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  border: 1px solid #ddd;
+  background: transparent;
+  padding: 10px 20px;
+  font-size: 12px;
+  border-radius: 30px;
+  transition: .3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+  background: var(--dark);
+  color: white;
+  border-color: var(--dark);
+}
+
+.search-box {
+  display: block;
+  width: min(400px, 100%);
+  margin: 0 auto 35px;
+  padding: 13px 17px;
+  border: 1px solid #ddd;
+  outline: none;
+  background: white;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 24px;
+}
+
+.product-card {
+  background: white;
+  position: relative;
+  transition: .3s;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 35px rgba(0,0,0,.08);
+}
+
+.product-image {
+  height: 260px;
+  background: #eeece7;
+  overflow: hidden;
+  position: relative;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: .5s;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.06);
+}
+
+.product-info {
+  padding: 20px;
+}
+
+.category {
+  color: var(--gold);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.product-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 19px;
+  margin: 9px 0;
+}
+
+.product-info p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.price {
+  font-weight: 800;
+  font-size: 15px;
+  margin-bottom: 15px;
+}
+
+.add-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  font-size: 11px;
+  letter-spacing: 1px;
+  transition: .3s;
+}
+
+.add-btn:hover {
+  background: var(--gold);
+}
+
+.no-products {
+  text-align: center;
+  grid-column: 1/-1;
+  color: var(--muted);
+  padding: 40px;
+}
+
+/* COLLECTION BANNER */
+
+.collection {
+  background: var(--dark);
+  color: white;
+  padding: 90px 8%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 50px;
+}
+
+.collection img {
+  width: 100%;
+  height: 380px;
+  object-fit: cover;
+}
+
+.collection small {
+  color: var(--gold);
+  letter-spacing: 4px;
+}
+
+.collection h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 43px;
+  margin: 20px 0;
+}
+
+.collection p {
+  color: #ccc;
+  line-height: 1.9;
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* ABOUT */
+
+.about {
+  text-align: center;
+  max-width: 750px;
+  margin: auto;
+  padding: 90px 25px;
+}
+
+.about small {
+  color: var(--gold);
+  letter-spacing: 3px;
+}
+
+.about h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 38px;
+  margin: 17px 0;
+}
+
+.about p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 2;
+}
+
+/* NEWSLETTER */
+
+.newsletter {
+  background: #eae5da;
+  text-align: center;
+  padding: 70px 20px;
+}
+
+.newsletter h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+.newsletter p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+
+.newsletter form {
+  display: flex;
+  max-width: 460px;
+  margin: auto;
+}
+
+.newsletter input {
+  flex: 1;
+  min-width: 0;
+  padding: 15px;
+  border: none;
+  outline: none;
+}
+
+.newsletter button {
+  background: var(--dark);
+  color: white;
+  padding: 0 22px;
+  border: none;
+}
+
+/* FOOTER */
+
+footer {
+  background: var(--dark);
+  color: white;
+  padding: 55px 7% 25px;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 35px;
+}
+
+.footer-content h3 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 18px;
+}
+
+.footer-content p,
+.footer-content a {
+  display: block;
+  color: #aaa;
+  font-size: 12px;
+  line-height: 2.2;
+}
+
+.footer-content a:hover {
+  color: var(--gold);
+}
+
+.copyright {
+  border-top: 1px solid #383833;
+  padding-top: 22px;
+  text-align: center;
+  font-size: 11px;
+  color: #888;
+}
+
+/* CART PANEL */
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  z-index: 200;
+}
+
+.overlay.show {
+  display: block;
+}
+
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: -450px;
+  width: min(420px,100%);
+  height: 100vh;
+  background: white;
+  z-index: 201;
+  padding: 25px;
+  transition: .4s;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-panel.show {
+  right: 0;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-header h2 {
+  font-family: 'Playfair Display', serif;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+}
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 0;
+}
+
+.cart-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.cart-item img {
+  width: 75px;
+  height: 85px;
+  object-fit: cover;
+  background: #eee;
+}
+
+.cart-item h4 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 8px;
+}
+
+.cart-item p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.quantity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quantity button {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #ddd;
+  background: white;
+}
+
+.remove-btn {
+  color: #b33;
+  background: none;
+  border: none;
+  font-size: 11px;
+  margin-top: 8px;
+}
+
+.cart-bottom {
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  letter-spacing: 1px;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 60px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* MOBILE */
+
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+}
+
+@media(max-width:950px) {
+  .product-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  nav {
+    gap: 15px;
+  }
+}
+
+@media(max-width:650px) {
+  header {
+    height: 70px;
+    padding: 0 5%;
+  }
+
+  .logo {
+    font-size: 23px;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 25px;
+    flex-direction: column;
+    gap: 22px;
+    box-shadow: 0 10px 15px rgba(0,0,0,.08);
+  }
+
+  nav.open {
+    display: flex;
+  }
+
+  .hero {
+    min-height: 500px;
+    padding: 50px 7%;
+  }
+
+  .benefits {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .section {
+    padding: 65px 5%;
+  }
+
+  .section-heading h2 {
+    font-size: 32px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 12px;
+  }
+
+  .product-image {
+    height: 175px;
+  }
+
+  .product-info {
+    padding: 12px;
+  }
+
+  .product-info h3 {
+    font-size: 16px;
+  }
+
+  .product-info p {
+    font-size: 10px;
+  }
+
+  .price {
+    font-size: 13px;
+  }
+
+  .add-btn {
+    font-size: 9px;
+    padding: 12px 5px;
+  }
+
+  .collection {
+    grid-template-columns: 1fr;
+    padding: 60px 7%;
+  }
+
+  .collection h2 {
+    font-size: 34px;
+  }
+
+  .collection img {
+    height: 280px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-content > div:first-child {
+    grid-column: 1/-1;
+  }
+
+  .newsletter form {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="announcement">
+  TIMELESS STYLE. EXCEPTIONAL QUALITY. | WELCOME TO AUREX TP
+</div>
+
+<header>
+  <a href="#" class="logo">AUREX<span>TP</span></a>
+
+  <nav id="nav">
+    <a href="#home">HOME</a>
+    <a href="#shop">SHOP</a>
+    <a href="#collection">COLLECTION</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+
+  <div class="header-actions">
+    <button class="cart-btn" onclick="openCart()">
+      BAG (<span id="cart-count">0</span>)
+    </button>
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+  </div>
+</header>
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+  <div class="hero-content">
+    <div class="hero-tag">THE ART OF TIME</div>
+
+    <h1>Time Is Your Greatest Luxury.</h1>
+
+    <p>
+      Discover exceptional timepieces designed for people
+      who appreciate elegance, precision and timeless style.
+    </p>
+
+    <a href="#shop" class="primary-btn">EXPLORE COLLECTION</a>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+
+<section class="benefits">
+  <div class="benefit">
+    <h3>✦ PREMIUM QUALITY</h3>
+    <p>Carefully selected timepieces</p>
+  </div>
+
+  <div class="benefit">
+    <h3>✦ SECURE SHOPPING</h3>
+    <p>A seamless shopping experience</p>
+  </div>
+
+  <div class="benefit">
+    <h3>✦ CUSTOMER SUPPORT</h3>
+    <p>We're here to help you</p>
+  </div>
+</section>
+
+<!-- SHOP -->
+
+<section class="section" id="shop">
+
+  <div class="section-heading">
+    <small>OUR COLLECTION</small>
+    <h2>Discover Your Timepiece</h2>
+    <p>Find the perfect watch for every moment.</p>
+  </div>
+
+  <input
+    type="text"
+    class="search-box"
+    id="search"
+    placeholder="Search for a watch..."
+    oninput="renderProducts()"
+  >
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterProducts('All',this)">All Watches</button>
+    <button class="filter-btn" onclick="filterProducts('Men',this)">Men</button>
+    <button class="filter-btn" onclick="filterProducts('Women',this)">Women</button>
+    <button class="filter-btn" onclick="filterProducts('Luxury',this)">Luxury</button>
+  </div>
+
+  <div class="product-grid" id="product-grid"></div>
+
+</section>
+
+<!-- COLLECTION -->
+
+<section class="collection" id="collection">
+
+  <div>
+    <small>THE SIGNATURE COLLECTION</small>
+
+    <h2>Elegance That Never Goes Out Of Style.</h2>
+
+    <p>
+      A great watch is more than an accessory.
+      It is an expression of personality, ambition
+      and confidence. Discover the AUREX TP
+      signature collection.
+    </p>
+
+    <a href="#shop" class="primary-btn">SHOP COLLECTION</a>
+  </div>
+
+  <img
+    src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=900"
+    alt="Luxury watch"
+  >
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+  <small>OUR STORY</small>
+
+  <h2>More Than Just A Watch.</h2>
+
+  <p>
+    At AUREX TP, we believe every second tells a story.
+    Our mission is to bring together beautiful design,
+    timeless elegance and exceptional craftsmanship.
+    Whether you're dressing for business, celebrating
+    a special moment or simply expressing your style,
+    there's a AUREX TP watch for you.
+  </p>
+</section>
+
+<!-- NEWSLETTER -->
+
+<section class="newsletter">
+  <h2>Stay Ahead Of Time.</h2>
+
+  <p>Subscribe for new arrivals, exclusive offers and updates.</p>
+
+  <form onsubmit="subscribe(event)">
+    <input type="email" id="email" placeholder="Enter your email address" required>
+    <button type="submit">SUBSCRIBE</button>
+  </form>
+</section>
+
+<!-- FOOTER -->
+
+<footer id="contact">
+
+  <div class="footer-content">
+
+    <div>
+      <h3>AUREX TP</h3>
+      <p>
+        Timeless watches for people who appreciate
+        the finer things in life.
+      </p>
+    </div>
+
+    <div>
+      <h3>QUICK LINKS</h3>
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#collection">Collection</a>
+      <a href="#about">About Us</a>
+    </div>
+
+    <div>
+      <h3>CONTACT</h3>
+      <a href="mailto:hello@timevault.com">Email Us</a>
+      <a href="#contact">Customer Service</a>
+      <a href="#contact">Shipping Information</a>
+    </div>
+
+  </div>
+
+  <div class="copyright">
+    © 2026 AUREX TP. All Rights Reserved.
+  </div>
+
+</footer>
+
+<!-- CART OVERLAY -->
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<!-- CART PANEL -->
+
+<aside class="cart-panel" id="cart-panel">
+
+  <div class="cart-header">
+    <h2>Your Shopping Bag</h2>
+    <button class="close-btn" onclick="closeCart()">×</button>
+  </div>
+
+  <div class="cart-items" id="cart-items"></div>
+
+  <div class="cart-bottom">
+    <div class="total">
+      <span>Total</span>
+      <span id="cart-total">₦0</span>
+    </div>
+
+    <button class="checkout-btn" onclick="checkout()">
+      PROCEED TO CHECKOUT
+    </button>
+  </div>
+
+</aside>
+
+<script>
+
+// SHARED PRODUCT DATABASE
+// This is the same storage key used by admin.html.
+const PRODUCT_STORAGE_KEY = "timevaultProducts";
+
+const starterStoreProducts = [
+  {
+    id: 1,
+    name: "Royal Gold",
+    category: "Men",
+    price: 185000,
+    description: "Classic gold luxury timepiece",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"
+  },
+  {
+    id: 2,
+    name: "Midnight Black",
+    category: "Men",
+    price: 145000,
+    description: "Minimal black statement watch",
+    image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600"
+  },
+  {
+    id: 3,
+    name: "Classic Silver",
+    category: "Luxury",
+    price: 225000,
+    description: "Premium silver wristwatch",
+    image: "https://images.unsplash.com/photo-1539874754764-5a96559165b0?w=600"
+  },
+  {
+    id: 4,
+    name: "Rose Elegance",
+    category: "Women",
+    price: 165000,
+    description: "Elegant rose gold design",
+    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600"
+  },
+  {
+    id: 5,
+    name: "Executive Gold",
+    category: "Luxury",
+    price: 350000,
+    description: "Sophisticated executive style",
+    image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600"
+  },
+  {
+    id: 6,
+    name: "Diamond Classic",
+    category: "Women",
+    price: 195000,
+    description: "Beautiful refined design",
+    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600"
+  },
+  {
+    id: 7,
+    name: "Urban Sport",
+    category: "Men",
+    price: 120000,
+    description: "Modern everyday timepiece",
+    image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=600"
+  },
+  {
+    id: 8,
+    name: "Prestige",
+    category: "Luxury",
+    price: 420000,
+    description: "An exclusive luxury statement",
+    image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=600"
+  }
+];
+
+// The admin dashboard also tracks stock quantity.
+starterStoreProducts.forEach(product => {
+  if (typeof product.stock !== "number") product.stock = 20;
+});
+
+function loadStoreProducts() {
+  try {
+    const savedProducts = localStorage.getItem(PRODUCT_STORAGE_KEY);
+
+    if (savedProducts !== null) {
+      const parsedProducts = JSON.parse(savedProducts);
+      return Array.isArray(parsedProducts) ? parsedProducts : starterStoreProducts;
+    }
+
+    // First visit: seed the shared store with the original storefront products.
+    localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(starterStoreProducts));
+    return starterStoreProducts;
+  } catch (error) {
+    console.error("Could not load AUREX TP products:", error);
+    return starterStoreProducts;
+  }
+}
+
+let products = loadStoreProducts();
+
+// CART DATA
+
+let cart = [];
+
+let activeCategory = "All";
+
+// FORMAT NAIRA
+
+function formatPrice(price) {
+  return "₦" + price.toLocaleString("en-NG");
+}
+
+// DISPLAY PRODUCTS
+
+function renderProducts() {
+
+  const grid = document.getElementById("product-grid");
+
+  const search = document.getElementById("search")
+    .value.toLowerCase();
+
+  const filtered = products.filter(product => {
+
+    const matchesCategory =
+      activeCategory === "All" ||
+      product.category === activeCategory;
+
+    const matchesSearch =
+      product.name.toLowerCase().includes(search) ||
+      product.description.toLowerCase().includes(search);
+
+    return matchesCategory && matchesSearch;
+
+  });
+
+  grid.innerHTML = "";
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="no-products">No watches found. Try another search.</div>';
+    return;
+  }
+
+  filtered.forEach(product => {
+
+    grid.innerHTML += `
+      <div class="product-card">
+
+        <div class="product-image">
+          <img src="${product.image}"
+               alt="${product.name}"
+               loading="lazy">
+        </div>
+
+        <div class="product-info">
+
+          <span class="category">${product.category}</span>
+
+          <h3>${product.name}</h3>
+
+          <p>${product.description}</p>
+
+          <div class="price">
+            ${formatPrice(product.price)}
+          </div>
+
+          <button class="add-btn"
+            onclick="addToCart(${product.id})">
+            ADD TO BAG +
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+// FILTER PRODUCTS
+
+function filterProducts(category, button) {
+
+  activeCategory = category;
+
+  document.querySelectorAll(".filter-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  button.classList.add("active");
+
+  renderProducts();
+
+}
+
+// ADD TO CART
+
+function addToCart(id) {
+
+  const product = products.find(p => p.id === id);
+
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({
+      ...product,
+      quantity: 1
+    });
+  }
+
+  updateCart();
+
+  openCart();
+
+}
+
+// UPDATE CART
+
+function updateCart() {
+
+  const count = cart.reduce(
+    (total, item) => total + item.quantity, 0
+  );
+
+  document.getElementById("cart-count").textContent = count;
+
+  const cartItems = document.getElementById("cart-items");
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity, 0
+  );
+
+  document.getElementById("cart-total").textContent =
+    formatPrice(total);
+
+  if (cart.length === 0) {
+    cartItems.innerHTML =
+      '<div class="empty-cart">Your shopping bag is empty.</div>';
+    return;
+  }
+
+  cartItems.innerHTML = "";
+
+  cart.forEach(item => {
+
+    cartItems.innerHTML += `
+      <div class="cart-item">
+
+        <img src="${item.image}" alt="${item.name}">
+
+        <div>
+          <h4>${item.name}</h4>
+
+          <p>${formatPrice(item.price)}</p>
+
+          <div class="quantity">
+            <button onclick="changeQuantity(${item.id},-1)">-</button>
+
+            <span>${item.quantity}</span>
+
+            <button onclick="changeQuantity(${item.id},1)">+</button>
+          </div>
+
+          <button class="remove-btn"
+            onclick="removeItem(${item.id})">
+            REMOVE
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+// CHANGE QUANTITY
+
+function changeQuantity(id, amount) {
+
+  const item = cart.find(item => item.id === id);
+
+  if (!item) return;
+
+  item.quantity += amount;
+
+  if (item.quantity <= 0) {
+    cart = cart.filter(item => item.id !== id);
+  }
+
+  updateCart();
+
+}
+
+// REMOVE ITEM
+
+function removeItem(id) {
+
+  cart = cart.filter(item => item.id !== id);
+
+  updateCart();
+
+}
+
+// OPEN CART
+
+function openCart() {
+
+  document.getElementById("cart-panel")
+    .classList.add("show");
+
+  document.getElementById("overlay")
+    .classList.add("show");
+
+}
+
+// CLOSE CART
+
+function closeCart() {
+
+  document.getElementById("cart-panel")
+    .classList.remove("show");
+
+  document.getElementById("overlay")
+    .classList.remove("show");
+
+}
+
+// MOBILE MENU
+
+function toggleMenu() {
+
+  document.getElementById("nav")
+    .classList.toggle("open");
+
+}
+
+// CHECKOUT
+
+function checkout() {
+
+  if (cart.length === 0) {
+    alert("Your shopping bag is empty!");
+    return;
+  }
+
+  const message = cart.map(item =>
+    `${item.name} x ${item.quantity} = ${formatPrice(item.price * item.quantity)}`
+  ).join("\n");
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity, 0
+  );
+
+  const whatsappNumber = "2347043383919";
+
+  const text = encodeURIComponent(
+    "Hello AUREX TP! I would like to place an order:\n\n" +
+    message +
+    "\n\nTotal: " + formatPrice(total) +
+    "\n\nPlease let me know how to complete payment and delivery."
+  );
+
+  window.open(
+    `https://wa.me/${whatsappNumber}?text=${text}`,
+    "_blank"
+  );
+
+}
+
+// NEWSLETTER
+
+function subscribe(event) {
+
+  event.preventDefault();
+
+  const email = document.getElementById("email").value;
+
+  alert("Thank you for subscribing: " + email);
+
+  event.target.reset();
+
+}
+
+// LIVE SYNC WITH ADMIN DASHBOARD
+// The storage event fires when admin.html changes products in another tab
+// on the same browser and the same Live Server origin.
+window.addEventListener("storage", function(event) {{
+  if (event.key === PRODUCT_STORAGE_KEY) {{
+    try {{
+      const updatedProducts = JSON.parse(event.newValue || "[]");
+      products = Array.isArray(updatedProducts) ? updatedProducts : [];
+      renderProducts();
+
+      // Remove cart items that no longer exist in the updated catalogue.
+      cart = cart.filter(item => products.some(product => product.id === item.id));
+      updateCart();
+    }} catch (error) {{
+      console.error("Could not sync AUREX TP products:", error);
+    }}
+  }}
+}});
+
+// INITIALIZE WEBSITE
+
+renderProducts();
+
+updateCart();
+
+</script>
+
+</body>
+</html>
