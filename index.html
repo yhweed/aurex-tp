@@ -749,7 +749,7 @@ footer {
 </div>
 
 <header>
-  <a href="#" class="logo">AUREX<span>TP</span></a>
+  <a href="#" class="logo">AUREX <span>TP</span></a>
 
   <nav id="nav">
     <a href="#home">HOME</a>
@@ -953,103 +953,50 @@ footer {
 
 </aside>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
-// SHARED PRODUCT DATABASE
-// This is the same storage key used by admin.html.
-const PRODUCT_STORAGE_KEY = "timevaultProducts";
+// SUPABASE CONNECTION
+const { createClient } = window.supabase;
+const supabaseClient = createClient("https://qxzpovbcjzlcaxkuzwpi.supabase.co", "sb_publishable_DA3nswLZcTWgTLsaNM_Zuw_WatZqh_Y");
 
+// Products are loaded from Supabase so every visitor sees the same catalogue.
 const starterStoreProducts = [
-  {
-    id: 1,
-    name: "Royal Gold",
-    category: "Men",
-    price: 185000,
-    description: "Classic gold luxury timepiece",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"
-  },
-  {
-    id: 2,
-    name: "Midnight Black",
-    category: "Men",
-    price: 145000,
-    description: "Minimal black statement watch",
-    image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600"
-  },
-  {
-    id: 3,
-    name: "Classic Silver",
-    category: "Luxury",
-    price: 225000,
-    description: "Premium silver wristwatch",
-    image: "https://images.unsplash.com/photo-1539874754764-5a96559165b0?w=600"
-  },
-  {
-    id: 4,
-    name: "Rose Elegance",
-    category: "Women",
-    price: 165000,
-    description: "Elegant rose gold design",
-    image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600"
-  },
-  {
-    id: 5,
-    name: "Executive Gold",
-    category: "Luxury",
-    price: 350000,
-    description: "Sophisticated executive style",
-    image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600"
-  },
-  {
-    id: 6,
-    name: "Diamond Classic",
-    category: "Women",
-    price: 195000,
-    description: "Beautiful refined design",
-    image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600"
-  },
-  {
-    id: 7,
-    name: "Urban Sport",
-    category: "Men",
-    price: 120000,
-    description: "Modern everyday timepiece",
-    image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=600"
-  },
-  {
-    id: 8,
-    name: "Prestige",
-    category: "Luxury",
-    price: 420000,
-    description: "An exclusive luxury statement",
-    image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=600"
-  }
+  { id: "seed-1", name: "Royal Gold", category: "Men", price: 185000, description: "Classic gold luxury timepiece", image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600" },
+  { id: "seed-2", name: "Midnight Black", category: "Men", price: 145000, description: "Minimal black statement watch", image: "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600" },
+  { id: "seed-3", name: "Classic Silver", category: "Luxury", price: 225000, description: "Premium silver wristwatch", image: "https://images.unsplash.com/photo-1539874754764-5a96559165b0?w=600" },
+  { id: "seed-4", name: "Rose Elegance", category: "Women", price: 165000, description: "Elegant rose gold design", image: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=600" },
+  { id: "seed-5", name: "Executive Gold", category: "Luxury", price: 350000, description: "Sophisticated executive style", image: "https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600" },
+  { id: "seed-6", name: "Diamond Classic", category: "Women", price: 195000, description: "Beautiful refined design", image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=600" },
+  { id: "seed-7", name: "Urban Sport", category: "Men", price: 120000, description: "Modern everyday timepiece", image: "https://images.unsplash.com/photo-1612817159949-195b6eb9e31a?w=600" },
+  { id: "seed-8", name: "Prestige", category: "Luxury", price: 420000, description: "An exclusive luxury statement", image: "https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?w=600" }
 ];
 
-// The admin dashboard also tracks stock quantity.
-starterStoreProducts.forEach(product => {
-  if (typeof product.stock !== "number") product.stock = 20;
-});
+let products = [...starterStoreProducts];
 
-function loadStoreProducts() {
-  try {
-    const savedProducts = localStorage.getItem(PRODUCT_STORAGE_KEY);
+async function loadStoreProducts() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("id,name,category,price,description,image_url,stock")
+    .eq("is_active", true)
+    .order("created_at", { ascending: false });
 
-    if (savedProducts !== null) {
-      const parsedProducts = JSON.parse(savedProducts);
-      return Array.isArray(parsedProducts) ? parsedProducts : starterStoreProducts;
-    }
-
-    // First visit: seed the shared store with the original storefront products.
-    localStorage.setItem(PRODUCT_STORAGE_KEY, JSON.stringify(starterStoreProducts));
-    return starterStoreProducts;
-  } catch (error) {
-    console.error("Could not load AUREX TP products:", error);
-    return starterStoreProducts;
+  if (error) {
+    console.error("Could not load AUREX TP products:", error.message);
+    renderProducts();
+    return;
   }
-}
 
-let products = loadStoreProducts();
+  products = (data || []).map(product => ({
+    id: product.id,
+    name: product.name,
+    category: product.category || "Luxury",
+    price: Number(product.price),
+    description: product.description || "",
+    image: product.image_url || ""
+  }));
+  renderProducts();
+}
 
 // CART DATA
 
@@ -1065,69 +1012,45 @@ function formatPrice(price) {
 
 // DISPLAY PRODUCTS
 
+function escapeStoreHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[char]);
+}
+
 function renderProducts() {
-
   const grid = document.getElementById("product-grid");
-
-  const search = document.getElementById("search")
-    .value.toLowerCase();
-
+  const search = document.getElementById("search").value.toLowerCase();
   const filtered = products.filter(product => {
-
-    const matchesCategory =
-      activeCategory === "All" ||
-      product.category === activeCategory;
-
-    const matchesSearch =
-      product.name.toLowerCase().includes(search) ||
+    const matchesCategory = activeCategory === "All" || product.category === activeCategory;
+    const matchesSearch = product.name.toLowerCase().includes(search) ||
       product.description.toLowerCase().includes(search);
-
     return matchesCategory && matchesSearch;
-
   });
 
   grid.innerHTML = "";
-
   if (filtered.length === 0) {
     grid.innerHTML = '<div class="no-products">No watches found. Try another search.</div>';
     return;
   }
 
   filtered.forEach(product => {
-
-    grid.innerHTML += `
-      <div class="product-card">
-
-        <div class="product-image">
-          <img src="${product.image}"
-               alt="${product.name}"
-               loading="lazy">
-        </div>
-
-        <div class="product-info">
-
-          <span class="category">${product.category}</span>
-
-          <h3>${product.name}</h3>
-
-          <p>${product.description}</p>
-
-          <div class="price">
-            ${formatPrice(product.price)}
-          </div>
-
-          <button class="add-btn"
-            onclick="addToCart(${product.id})">
-            ADD TO BAG +
-          </button>
-
-        </div>
-
+    const card = document.createElement("div");
+    card.className = "product-card";
+    card.innerHTML = `
+      <div class="product-image">
+        <img src="${escapeStoreHTML(product.image)}" alt="${escapeStoreHTML(product.name)}" loading="lazy">
       </div>
-    `;
-
+      <div class="product-info">
+        <span class="category">${escapeStoreHTML(product.category)}</span>
+        <h3>${escapeStoreHTML(product.name)}</h3>
+        <p>${escapeStoreHTML(product.description)}</p>
+        <div class="price">${formatPrice(product.price)}</div>
+        <button class="add-btn" type="button">ADD TO BAG +</button>
+      </div>`;
+    card.querySelector(".add-btn").addEventListener("click", () => addToCart(product.id));
+    grid.appendChild(card);
   });
-
 }
 
 // FILTER PRODUCTS
@@ -1337,30 +1260,14 @@ function subscribe(event) {
 
 }
 
-// LIVE SYNC WITH ADMIN DASHBOARD
-// The storage event fires when admin.html changes products in another tab
-// on the same browser and the same Live Server origin.
-window.addEventListener("storage", function(event) {{
-  if (event.key === PRODUCT_STORAGE_KEY) {{
-    try {{
-      const updatedProducts = JSON.parse(event.newValue || "[]");
-      products = Array.isArray(updatedProducts) ? updatedProducts : [];
-      renderProducts();
-
-      // Remove cart items that no longer exist in the updated catalogue.
-      cart = cart.filter(item => products.some(product => product.id === item.id));
-      updateCart();
-    }} catch (error) {{
-      console.error("Could not sync AUREX TP products:", error);
-    }}
-  }}
-}});
-
 // INITIALIZE WEBSITE
-
-renderProducts();
-
 updateCart();
+loadStoreProducts();
+
+// Refresh the catalogue when the visitor returns to the store tab.
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) loadStoreProducts();
+});
 
 </script>
 
